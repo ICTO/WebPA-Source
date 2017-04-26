@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: webpa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-01 08:25+0000\n"
-"PO-Revision-Date: 2016-08-01 04:35-0400\n"
+"PO-Revision-Date: 2017-04-26 10:57-0400\n"
 "Last-Translator: mcrauwel <matthias.crauwels@ugent.be>\n"
 "Language-Team: Dutch, Belgium\n"
 "Language: nl_BE\n"
@@ -1312,7 +1312,7 @@ msgstr "Titularissen"
 #: tutors/forms/index.php:30 tutors/forms/index.php:31
 #: tutors/forms/index.php:35
 msgid "my forms"
-msgstr "mijn formuleren"
+msgstr "mijn formulieren"
 
 #: includes/classes/class_ui.php:57 includes/classes/class_ui.php:63
 #: lang/en/generic.php:18 students/groups/index.php:31

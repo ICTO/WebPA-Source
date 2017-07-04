@@ -422,6 +422,20 @@ if (!$do_reports) {
     </tr>
     </table>
   </div>
+  <div class="report">
+    <table cellpadding="2" cellspacing="2" width="100%">
+    <tr>
+      <td valign="top">
+        <div class="title">Spinnenwebdiagram voor elke student</div>
+        <div class="info">Dit rapport voorziet een spinnenwebdiagram voor elke student. Het diagram bevat de eigen score en de gemiddelde score van de andere studenten per vraag.</div>
+      </td>
+      <td class="downloads" nowrap="nowrap" valign="top">
+        <div><?php echo gettext('View Report:');?></div>
+        <a href="report_radar.php?t=view&<?php echo($qs); ?>" target="_blank"><img src="../../../images/file_icons/report.png" width="32" height="32" alt="<?php echo gettext('Report - View the report');?>" /></a>
+      </td>
+    </tr>
+    </table>
+  </div>
 <?php
 }
 ?>

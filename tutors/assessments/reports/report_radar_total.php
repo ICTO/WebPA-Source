@@ -243,7 +243,7 @@ if ($type == 'view') {
       $q_count = 0;
       $labels = [];
       foreach ($questions as $question) {
-        $labels[] = $question;
+        $labels[] = 'Q'.($q_count+1);
 
         $markers = array_keys($score_array[$team][$team_member][$question]);
 

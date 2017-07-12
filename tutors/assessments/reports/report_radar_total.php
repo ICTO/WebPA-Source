@@ -231,6 +231,7 @@ if ($type == 'view') {
 
   $teams = array_keys($score_array);
   $r_count = 1;
+  $questions_shown = false;
   foreach ($teams as $i=> $team) {
     echo "<h2>{$team}</h2>";
     $scores = calculateScores($score_array[$team]);
@@ -238,8 +239,11 @@ if ($type == 'view') {
     foreach ($team_members as $team_member) {
       echo "<h3>".gettext("Results for:")." {$team_member}</h3>";
       $questions = array_keys($score_array[$team][$team_member]);
-      foreach ($questions as $value) {
-        echo "<p>$value</p>";
+      if(!$questions_shown){
+        foreach ($questions as $value) {
+          echo "<p>$value</p>";
+        }
+        $questions_shown = true;
       }
       echo "<table class='grid debug-table' cellpadding='2' cellspacing='1' style='font-size: 0.8em'>";
       $q_count = 0;

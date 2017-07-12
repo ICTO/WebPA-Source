@@ -141,6 +141,42 @@ if ($assessment) {
   }
 }
 
+function calculateScores($data){
+  // sort all scores by user and question
+  $individual_scores = [];
+  $avarage_scores = [];
+  foreach ($data as $gebruiker => $questions) {
+    foreach ($questions as $question => $scores) {
+      $individual_scores[$gebruiker][$question] = [];
+      foreach ($scores as $gebruiker_score => $score) {
+        if($gebruiker_score != $gebruiker && is_numeric($score)){
+          $individual_scores[$gebruiker][$question][] = $score;
+        }
+      }
+    }
+  }
+  // calculate the avarage of the scores
+  foreach ($individual_scores as $gebruiker => $questions) {
+    foreach ($questions as $question => $scores) {
+      $individual_scores[$gebruiker][$question] = number_format(array_sum($scores)/count($scores),2,'.', '');
+      if(!isset($avarage_scores[$question])){
+        $avarage_scores[$question] = [];
+      }
+      $avarage_scores[$question][] = $individual_scores[$gebruiker][$question];
+    }
+  }
+
+  // calculate the avarage of all the scores for a question
+  foreach ($avarage_scores as $question => $scores) {
+    $avarage_scores[$question] = number_format(array_sum($scores)/count($scores), 2, '.', '');
+  }
+
+  return [
+    'individual_scores' => $individual_scores,
+    'avarage_scores' => $avarage_scores
+  ];
+}
+
 /*
 * --------------------------------------------------------------------------------
 * If report type is HTML view
@@ -197,6 +233,7 @@ if ($type == 'view') {
   $r_count = 1;
   foreach ($teams as $i=> $team) {
     echo "<h2>{$team}</h2>";
+    $scores = calculateScores($score_array[$team]);
     $team_members = array_keys($score_array[$team]);
     foreach ($team_members as $team_member) {
       echo "<h3>".gettext("Results for:")." {$team_member}</h3>";
@@ -205,8 +242,6 @@ if ($type == 'view') {
       echo "<table class='grid debug-table' cellpadding='2' cellspacing='1' style='font-size: 0.8em'>";
       $q_count = 0;
       $labels = [];
-      $own_data = [];
-      $other_data = [];
       foreach ($questions as $question) {
         $labels[] = 'Q'.($q_count+1);
 
@@ -217,17 +252,9 @@ if ($type == 'view') {
         $other_avarage = [];
         foreach ($markers as $marker) {
           $score = $score_array[$team][$team_member][$question][$marker];
-          if(is_numeric($score)){
-            if($marker == $team_member) {
-              $own_data[] = $score;
-            } else {
-              $other_avarage[] = $score;
-            }
-          }
           $markers_row =  $markers_row ."<th>{$marker}</th>";
           $scores_row = $scores_row . "<td>{$score}</td>";
         }
-        $other_data[] = number_format(array_sum($other_avarage)/count($other_avarage),2, '.', '');
         if ($q_count == 0) {
           echo "<tr><th>&nbsp;</th>";
           echo $markers_row;
@@ -244,27 +271,25 @@ if ($type == 'view') {
           labels: ["<?php echo implode('","', $labels); ?>"],
           datasets: [
             {
-              label: "Gemiddelde score gegeven door de andere studenten",
+              label: "Eigen behaalde score",
               backgroundColor: "rgba(30,100,200,0.2)",
               borderColor: "rgba(30,100,200,1)",
               pointBackgroundColor: "rgba(30,100,200,1)",
               pointBorderColor: "#fff",
               pointHoverBackgroundColor: "#fff",
               pointHoverBorderColor: "rgba(30,100,200,1)",
-              data: [<?php echo implode(',', $other_data)?>]
+              data: [<?php echo implode(',', $scores['individual_scores'][$team_member])?>]
             }
-          <?php if($own_data) { ?>
             ,{
-              label: "Eigen gegeven score",
+              label: "Gemiddelde score behaald door de andere studenten",
               backgroundColor: "rgba(179,181,198,0.2)",
               borderColor: "rgba(179,181,198,1)",
               pointBackgroundColor: "rgba(179,181,198,1)",
               pointBorderColor: "#fff",
               pointHoverBackgroundColor: "#fff",
               pointHoverBorderColor: "rgba(179,181,198,1)",
-              data: [<?php echo implode(',', $own_data)?>]
+              data: [<?php echo implode(',', $scores['avarage_scores'])?>]
             }
-          <?php } ?>
           ]
         };
         var options =

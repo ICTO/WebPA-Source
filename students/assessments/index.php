@@ -219,7 +219,12 @@ if ( (!$open_assessments) && (!$pending_assessments) && (!$finished_assessments)
       echo('  <td style="font-weight: bold; text-align: center;">');
       echo("    $completed_msg");
       if ( ($assessment->allow_feedback) && ($assessment->close_date<$now) ) {
-        echo("<div style=\"margin-top: 0.5em;\"><a href=\"assessment_feedback.php?a={$assessment->id}\" target=\"_blank\">view feedback</a></div>");
+        $assessment->set_db($DB);
+        $mark_sheets = $assessment->get_all_marking_params();
+        foreach ($mark_sheets as $md => $value) {
+          $md_stamp = strtotime($md);
+          echo("<div style=\"margin-top: 0.5em;\"><a href=\"radar_feedback.php?a={$assessment->id}&md=$md_stamp\" target=\"_blank\">".gettext('view feedback')."</a></div>");
+        }
       }
       echo('  </td>');
       echo('</tr>');

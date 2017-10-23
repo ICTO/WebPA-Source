@@ -224,7 +224,7 @@ span.question_range { font-size: 0.8em; }
     switch (com) {
       case 'delete' :
             if (confirm('<?php echo gettext('This assessment will be deleted.\\n\\nClick OK to confirm.');?>')) {
-              document.assessment_form.command.value = '<?php echo gettext('delete');?>';
+              document.assessment_form.command.value = '<?php echo 'delete';?>';
               document.assessment_form.submit();
             }
             break;

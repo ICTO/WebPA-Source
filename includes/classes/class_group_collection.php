@@ -130,7 +130,7 @@ class GroupCollection {
       // load all necessary info
       $fields = array ('collection_id'      => $this->id ,
                'module_id'      => $this->module_id ,
-               'collection_name'      => $this->name ,
+               'collection_name'      => mysql_real_escape_string($this->name) ,
                'collection_created_on'  => date(MYSQL_DATETIME_FORMAT,$this->_created_on) ,
                'collection_locked_on'   => ( (!$this->_locked_on) ? null : date(MYSQL_DATETIME_FORMAT,$this->_locked_on) ) ,
               );
